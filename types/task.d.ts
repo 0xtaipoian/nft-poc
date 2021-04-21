@@ -1,0 +1,3 @@
+interface MintArgs {
+  contract: string;
+}

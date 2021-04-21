@@ -1,0 +1,41 @@
+{
+  "name": "nft-poc",
+  "version": "1.0.0",
+  "description": "A POC of NFT game",
+  "scripts": {
+    "build": "npm run clean && npm run lint && npm run compile",
+    "compile": "hardhat compile",
+    "precompile": "npm run clean",
+    "test": "hardhat test:jest",
+    "lint": "solhint ./contracts/**/*.sol",
+    "clean": "hardhat clean"
+  },
+  "author": "Pager Chan<0xtaipoian@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "4.0.0"
+  },
+  "devDependencies": {
+    "@ethereum-waffle/jest": "3.2.2",
+    "@nomiclabs/hardhat-ethers": "2.0.2",
+    "@nomiclabs/hardhat-waffle": "2.0.1",
+    "@typechain/ethers-v5": "6.0.5",
+    "@types/jest": "26.0.22",
+    "@types/node": "14.14.41",
+    "dotenv": "8.2.0",
+    "ethereum-waffle": "3.3.0",
+    "ethers": "5.1.3",
+    "hardhat": "2.2.0",
+    "hardhat-gas-reporter": "1.0.4",
+    "hardhat-jest-plugin": "0.0.3",
+    "hardhat-typechain": "0.3.5",
+    "jest": "26.6.1",
+    "prettier": "2.2.1",
+    "prettier-plugin-solidity": "1.0.0-beta.9",
+    "ts-generator": "0.1.1",
+    "ts-jest": "26.5.5",
+    "ts-node": "9.1.1",
+    "typechain": "4.0.3",
+    "typescript": "4.2.4"
+  }
+}
