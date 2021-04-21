@@ -6,11 +6,32 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "dist",
-    "typeRoots": ["types", "node_modules/@types"]
+    "typeRoots": [
+      "types",
+      "node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["./scripts", "./test"],
+  "include": [
+    "./scripts",
+    "./test"
+  ],
   "files": [
     "./hardhat.config.ts",
     "./types/task.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

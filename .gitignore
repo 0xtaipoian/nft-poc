@@ -3,3 +3,5 @@ secrets.json
 artifacts
 cache
 .env*
+.next
+next-env.d.ts
