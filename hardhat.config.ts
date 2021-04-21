@@ -7,6 +7,8 @@ import 'hardhat-typechain';
 import { HardhatUserConfig, task, types } from 'hardhat/config';
 import { mint } from './scripts/mint';
 
+const ALCHEMY_API_URI_FORKING = process.env.ALCHEMY_API_URI_FORKING || '';
+
 dotEnvConfig({
   path: './.env',
 });
@@ -17,6 +19,7 @@ if (!MNEMONIC) {
   console.error('✖ Please set your MNEMONIC in environment variable or .env file');
   process.exit(1);
 }
+
 const accounts = {
   mnemonic: MNEMONIC,
 };
@@ -57,7 +60,15 @@ const config: HardhatUserConfig = {
     localhost: {
       url: 'http://127.0.0.1:8545',
     },
-    hardhat: {},
+    hardhat: {
+      ...(ALCHEMY_API_URI_FORKING
+        ? {
+            forking: {
+              url: ALCHEMY_API_URI_FORKING,
+            },
+          }
+        : {}),
+    },
     testnet: {
       url: 'https://data-seed-prebsc-1-s1.binance.org:8545',
       chainId: 97,
