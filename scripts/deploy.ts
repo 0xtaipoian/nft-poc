@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import { ethers } from 'hardhat';
 
-const TOKEN_BASE_URI = process.env.TOKEN_BASE_URI;
+const TOKEN_BASE_URI = process.env.TOKEN_BASE_URI || '';
 
 console.log(TOKEN_BASE_URI);
 async function main() {
@@ -18,3 +19,5 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+/* eslint-enable camelcase */

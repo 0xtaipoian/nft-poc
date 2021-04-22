@@ -1,40 +1,60 @@
-import { BigNumber } from 'ethers';
+/* eslint-disable camelcase */
+import { Signer } from 'ethers';
 import { ethers } from 'hardhat';
-import { NftPoc } from '../typechain';
+import { NftPoc, NftPoc__factory } from '../typechain';
 
 describe('NftPoc', () => {
+  let signers: Signer[];
+  let root: string;
+  let nftPoc: NftPoc;
+
+  beforeAll(async () => {
+    signers = await ethers.getSigners();
+    root = await signers[0].getAddress();
+  });
+
+  beforeEach(async () => {
+    const NftPocFactory = ((await ethers.getContractFactory('NftPoc')) as any) as NftPoc__factory;
+
+    nftPoc = await NftPocFactory.deploy('http://localhost/api/token/');
+  });
+
   it('Should mint a new asset', async () => {
-    const signers = await ethers.getSigners();
-    const NftPocFactory = await ethers.getContractFactory('NftPoc');
-    const nftPoc = (await NftPocFactory.deploy('http://localhost/api/token/')) as NftPoc;
+    await nftPoc.mint({
+      from: root,
+      value: 1,
+    });
 
-    await nftPoc.mint(signers[0].address);
+    // expect(await nftPoc.ownerOf(1)).toEqual(root);
+    expect(await nftPoc.tokenURI(0)).toEqual('http://localhost/api/token/0');
+  });
 
-    expect(await nftPoc.getOwner(1)).toEqual(signers[0].address);
-    expect(await nftPoc.tokenURI(1)).toEqual('http://localhost/api/token/1');
-    expect(await nftPoc.totalSupply()).toEqual(BigNumber.from(1));
-
-    // mint second nft
-    await nftPoc.mint(signers[0].address);
-
-    expect(await nftPoc.getOwner(2)).toEqual(signers[0].address);
-    expect(await nftPoc.tokenURI(2)).toEqual('http://localhost/api/token/2');
-    expect(await nftPoc.totalSupply()).toEqual(BigNumber.from(2));
+  it('Should return underflow with BNB lower than 1', async () => {
+    await expect(
+      nftPoc.mint({
+        from: root,
+        value: 0.1,
+      })
+    ).rejects.toThrow();
   });
 
   it('Should transfer token ownership to another address', async () => {
-    const signers = await ethers.getSigners();
-    const NftPocFactory = await ethers.getContractFactory('NftPoc');
-    const nftPoc = (await NftPocFactory.deploy('http://localhost/api/token/')) as NftPoc;
+    const from = root;
+    const to = await signers[1].getAddress();
 
-    const from = signers[0].address;
-    const to = signers[1].address;
+    await nftPoc.mint({
+      from: root,
+      value: 1,
+    });
 
-    await nftPoc.mint(from);
     const token = await nftPoc.tokenOfOwnerByIndex(from, 0);
-    expect(await nftPoc.getOwner(token)).toEqual(from);
 
-    await nftPoc.transferAsset(from, to, token);
-    expect(await nftPoc.getOwner(token)).toEqual(to);
+    expect(await nftPoc.ownerOf(token)).toEqual(from);
+
+    await nftPoc.transferFrom(from, to, token);
+
+    expect(await nftPoc.ownerOf(token)).toEqual(to);
   });
 });
+
+/* eslint-enable camelcase */

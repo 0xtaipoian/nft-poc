@@ -3,44 +3,32 @@ pragma solidity 0.8.3;
 
 import 'hardhat/console.sol';
 
+import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
-import '@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
 
-contract NftPoc is IERC721Metadata, ERC721Enumerable {
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIds;
+contract NftPoc is ERC721Enumerable, Ownable {
+  uint256 public constant MAX_SUPPLY = 10;
 
   // Base URI
   string private _tokenBaseURI;
 
-  constructor(string memory baseURI) public ERC721('NftPoc', 'NFTPOC') {
+  constructor(string memory baseURI) ERC721('NftPoc', 'NFTPOC') {
     _setBaseURI(baseURI);
   }
 
-  function mint(address owner) public returns (uint256) {
-    _tokenIds.increment();
+  function mint() public payable {
+    uint256 _totalSupply = totalSupply();
 
-    uint256 newTokenId = _tokenIds.current();
-    _mint(owner, newTokenId);
+    require(_totalSupply < MAX_SUPPLY, 'Sale has already ended');
+    require(_totalSupply + 1 <= MAX_SUPPLY, 'Exceeds maximum nft supply');
+    require(msg.value >= 1, 'Ether value sent is below the price');
 
-    return newTokenId;
+    uint256 newTokenId = totalSupply();
+    _mint(msg.sender, newTokenId);
   }
 
-  function transferAsset(
-    address from,
-    address to,
-    uint256 tokenId
-  ) public {
-    transferFrom(from, to, tokenId);
-  }
-
-  function getOwner(uint256 tokenId) public view returns (address) {
-    return ownerOf(tokenId);
-  }
-
-  function _setBaseURI(string memory _baseURI) internal virtual {
-    _tokenBaseURI = _baseURI;
+  function _setBaseURI(string memory baseURI) internal virtual {
+    _tokenBaseURI = baseURI;
   }
 
   function _baseURI() internal view virtual override returns (string memory) {

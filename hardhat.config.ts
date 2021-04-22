@@ -42,6 +42,10 @@ task('mint', 'mint token')
  * @type import('hardhat/config').HardhatUserConfig
  */
 const config: HardhatUserConfig = {
+  typechain: {
+    outDir: 'typechain',
+    target: 'ethers-v5',
+  },
   solidity: {
     version: '0.8.3',
     settings: {
