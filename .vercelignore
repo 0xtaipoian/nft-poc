@@ -25,3 +25,9 @@ README.md
 **/build
 **/lib
 **/.next
+**/*.sol
+artifacts
+contracts
+scripts
+hardhat.config.ts
+truffle-config.js

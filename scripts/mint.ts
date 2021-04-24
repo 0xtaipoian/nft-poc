@@ -1,13 +1,12 @@
 import { parseFixed } from '@ethersproject/bignumber';
 import '@nomiclabs/hardhat-ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { NftPoc } from '../typechain';
 
 export async function mint(args: MintArgs, hre: HardhatRuntimeEnvironment) {
   const { contract } = args;
 
   const [account] = await hre.ethers.getSigners();
-  const nftPoc = (await (hre.ethers.getContractAt('NftPoc', contract) as any)) as NftPoc;
+  const nftPoc = await (hre.ethers.getContractAt('NftPoc', contract) as any);
   let totalSupply = 0;
 
   try {

@@ -50,3 +50,8 @@ npx hardhat run --network localhost scripts/deploy.ts
 # Mint a nft
 export TOKEN_BASE_URI = http://localhost/; npx hardhat run --network localhost scripts/deploy.ts
 ```
+
+## Issues
+
+- Got type casting error with ./typechain build files, probably the ethers-v5 version problem [https://github.com/ethereum-ts/TypeChain/issues/330](https://github.com/ethereum-ts/TypeChain/issues/330), the workaround is manually adding `@ts-ignore` anywhere with type error.
+- Transaction error, nonce height mismatch [https://medium.com/singapore-blockchain-dapps/reset-metamask-nonce-766dd4c27ca8](https://medium.com/singapore-blockchain-dapps/reset-metamask-nonce-766dd4c27ca8)
