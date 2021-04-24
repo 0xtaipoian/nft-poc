@@ -17,6 +17,10 @@ const AppGlobalStyle = createGlobalStyle`
     outline: none;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   *, *:before, *:after {
     box-sizing: inherit;
     text-rendering: geometricPrecision;

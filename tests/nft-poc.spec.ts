@@ -44,7 +44,7 @@ describe('NftPoc', () => {
 
     await nftPoc.mint({
       from: root,
-      value: 1,
+      value: 10000000,
     });
 
     const token = await nftPoc.tokenOfOwnerByIndex(from, 0);

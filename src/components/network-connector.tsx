@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Button, Flex, FlexProps, Text } from 'rebass/styled-components';
-import styled from 'styled-components';
 import { ConnectContext } from '../contexts/connection.context';
 
 declare global {
@@ -11,16 +10,22 @@ declare global {
 
 export type NetworkConnectorProps = FlexProps;
 
-const Container = styled(Flex)`
-  height: 100%;
-`;
-
 export const NetworkConnector: React.FC<NetworkConnectorProps> = () => {
   const { address, isConnected, disconnect, connect } = useContext(ConnectContext);
-  const shortAddress = address ? `${address.substr(0, 5)}…${address.substr(-4)}` : '';
+  const ellipsizedText = address ? `${address.substr(0, 5)}…${address.substr(-4)}` : '';
   const ConnectedButton = (
     <Flex flexDirection="row">
-      <Text lineHeight={2}>{shortAddress}</Text>
+      <Text
+        backgroundColor="black"
+        color="white"
+        lineHeight={2}
+        px={3}
+        sx={{
+          borderRadius: 'circle',
+        }}
+      >
+        {ellipsizedText}
+      </Text>
       <Button ml={2} variant="outline" onClick={disconnect}>
         Disconnect
       </Button>
@@ -33,8 +38,8 @@ export const NetworkConnector: React.FC<NetworkConnectorProps> = () => {
   );
 
   return (
-    <Container alignItems="center" flexDirection="column" justifyContent="center" px={3}>
+    <Flex alignItems="center" flexDirection="column" height="100%" justifyContent="center" px={3}>
       {isConnected ? ConnectedButton : DisconnectedButton}
-    </Container>
+    </Flex>
   );
 };

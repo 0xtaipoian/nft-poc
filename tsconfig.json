@@ -29,8 +29,8 @@
     "./typechain",
   ],
   "files": [
-    "./hardhat.config.ts",
-    "./types/task.d.ts"
+  "./hardhat.config.ts",
+  "./types/task.d.ts"
   ],
   "exclude": [
     "node_modules"

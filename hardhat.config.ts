@@ -5,6 +5,7 @@ import 'hardhat-gas-reporter';
 import 'hardhat-jest-plugin';
 import 'hardhat-typechain';
 import { HardhatUserConfig, task, types } from 'hardhat/config';
+import 'solidity-coverage';
 import { mint } from './scripts/mint';
 
 const ALCHEMY_API_URI_FORKING = process.env.ALCHEMY_API_URI_FORKING || '';
@@ -64,6 +65,9 @@ const config: HardhatUserConfig = {
     localhost: {
       url: 'http://127.0.0.1:8545',
     },
+    coverage: {
+      url: 'http://127.0.0.1:8555', // Coverage launches its own ganache-cli client
+    },
     hardhat: {
       ...(ALCHEMY_API_URI_FORKING
         ? {
@@ -85,9 +89,6 @@ const config: HardhatUserConfig = {
       gasPrice: 20000000000,
       accounts,
     },
-  },
-  mocha: {
-    timeout: 200000,
   },
 };
 

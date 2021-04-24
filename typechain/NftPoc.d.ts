@@ -26,6 +26,7 @@ interface NftPocInterface extends ethers.utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getTokensByOwner(address)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint()": FunctionFragment;
     "name()": FunctionFragment;
@@ -56,6 +57,10 @@ interface NftPocInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokensByOwner",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
@@ -115,6 +120,10 @@ interface NftPocInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokensByOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -253,6 +262,16 @@ export class NftPoc extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    getTokensByOwner(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { ownerTokens: BigNumber[] }>;
+
+    "getTokensByOwner(address)"(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { ownerTokens: BigNumber[] }>;
 
     isApprovedForAll(
       owner: string,
@@ -435,6 +454,16 @@ export class NftPoc extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getTokensByOwner(
+    _owner: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  "getTokensByOwner(address)"(
+    _owner: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
   isApprovedForAll(
     owner: string,
     operator: string,
@@ -609,6 +638,16 @@ export class NftPoc extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getTokensByOwner(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    "getTokensByOwner(address)"(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     isApprovedForAll(
       owner: string,
@@ -815,6 +854,16 @@ export class NftPoc extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getTokensByOwner(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getTokensByOwner(address)"(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: string,
       operator: string,
@@ -997,6 +1046,16 @@ export class NftPoc extends Contract {
 
     "getApproved(uint256)"(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTokensByOwner(
+      _owner: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getTokensByOwner(address)"(
+      _owner: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

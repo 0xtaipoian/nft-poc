@@ -9,9 +9,6 @@ const debug = Debug('web:connection.context');
 const providerOptions: Partial<IProviderOptions> = {
   walletconnect: {
     package: WalletConnectProvider,
-    options: {
-      infuraId: 'abc',
-    },
   },
 };
 
@@ -57,7 +54,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
     if (web3Modal) {
       try {
         const modalProvider = await web3Modal.connect();
-        const ethersProvider = new providers.Web3Provider(modalProvider);
+        const ethersProvider = new providers.Web3Provider(modalProvider, 'any');
         const ethersSigner = ethersProvider.getSigner();
         const ethAddress = await ethersSigner.getAddress();
 
@@ -93,6 +90,31 @@ export const ConnectionProvider: React.FC = ({ children }) => {
       setIsInitialized(true);
     }
   }, [web3Modal, connect]);
+
+  // event tracking
+  useEffect(() => {
+    if (typeof window.ethereum !== 'undefined') {
+      window.ethereum.on('accountsChanged', accounts => {
+        setAddress(accounts[0]);
+
+        debug('accountsChanged %s', accounts);
+      });
+
+      window.ethereum.on('chainChanged', chainId => {
+        debug('chainChanged %s', chainId);
+      });
+
+      window.ethereum.on('message', message => {
+        debug('providerMessage %s', message);
+      });
+    }
+
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeAllListeners();
+      }
+    };
+  }, []);
 
   return (
     <ConnectContext.Provider
