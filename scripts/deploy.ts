@@ -3,7 +3,6 @@ import { ethers } from 'hardhat';
 
 const TOKEN_BASE_URI = process.env.TOKEN_BASE_URI || '';
 
-console.log(TOKEN_BASE_URI);
 async function main() {
   const factory = await ethers.getContractFactory('NftPoc');
   const nftPoc = await factory.deploy(TOKEN_BASE_URI);
