@@ -51,6 +51,18 @@ npx hardhat run --network localhost scripts/deploy.ts
 export TOKEN_BASE_URI = http://localhost/; npx hardhat run --network localhost scripts/deploy.ts
 ```
 
+## Environment variables
+
+```shell
+# For hardhat
+MNEMONIC=...
+TOKEN_BASE_URI=http://localhost:3000/api/metadata/
+
+# For NextJS
+NEXT_PUBLIC_CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
+APP_URL=http://localhost:3000
+```
+
 ## Issues
 
 - Got type casting error with ./typechain build files, probably the ethers-v5 version problem [https://github.com/ethereum-ts/TypeChain/issues/330](https://github.com/ethereum-ts/TypeChain/issues/330), the workaround is manually adding `@ts-ignore` anywhere with type error.
