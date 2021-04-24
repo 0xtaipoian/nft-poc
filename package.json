@@ -6,7 +6,7 @@
   "author": "Pager Chan<0xtaipoian@protonmail.com>",
   "scripts": {
     "build:contracts": "npm run clean && npm run compile",
-    "build:next": "next build && next export",
+    "build:next": "next build",
     "clean": "hardhat clean",
     "precompile": "npm run clean",
     "compile": "hardhat compile",
