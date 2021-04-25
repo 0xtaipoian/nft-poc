@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-
 import { Result } from '@ethersproject/abi';
 import { Event, EventFilter } from 'ethers';
 

@@ -7,6 +7,7 @@ export interface MetaProps {
 
 export const Meta: React.FC<MetaProps> = ({ lang = 'en' }) => (
   <Head>
+    <title>NFT PoC</title>
     <meta
       content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"
       name="viewport"

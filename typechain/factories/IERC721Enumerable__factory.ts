@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-
 import { Provider } from '@ethersproject/providers';
 import { Contract, Signer } from 'ethers';
 import type { IERC721Enumerable } from '../IERC721Enumerable';

@@ -2,19 +2,18 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-
 import { FunctionFragment, Result } from "@ethersproject/abi";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import {
-  BigNumber,
-  BigNumberish,
+    BigNumber,
+    BigNumberish,
 
 
 
 
-  CallOverrides, Contract,
-  ContractTransaction, ethers,
+    CallOverrides, Contract,
+    ContractTransaction, ethers,
 
 
 
@@ -22,7 +21,7 @@ import {
 
 
 
-  Overrides, PopulatedTransaction, Signer
+    Overrides, PopulatedTransaction, Signer
 } from "ethers";
 import { TypedEvent, TypedEventFilter, TypedListener } from "./commons";
 

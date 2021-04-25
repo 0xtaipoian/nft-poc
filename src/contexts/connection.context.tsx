@@ -9,6 +9,13 @@ const debug = Debug('web:connection.context');
 const providerOptions: Partial<IProviderOptions> = {
   walletconnect: {
     package: WalletConnectProvider,
+    options: {
+      rpc: {
+        56: 'https://bsc-dataseed.binance.org',
+        97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+        31337: 'http://127.0.0.1:8545',
+      },
+    },
   },
 };
 
@@ -16,6 +23,7 @@ export interface ConnectionProps {
   provider: providers.Web3Provider | null;
   signer: Signer | null;
   address: string | null;
+  chainId: number | null;
   isConnected: boolean;
   isInitialized: boolean;
   connect?: () => Promise<void>;
@@ -27,6 +35,7 @@ export const ConnectContext = createContext<ConnectionProps>({
   isInitialized: false,
   provider: null,
   signer: null,
+  chainId: null,
   address: null,
 });
 
@@ -35,7 +44,9 @@ export const ConnectionProvider: React.FC = ({ children }) => {
   const [provider, setProvider] = useState<providers.Web3Provider | null>(null);
   const [signer, setSigner] = useState<Signer | null>(null);
   const [address, setAddress] = useState<string | null>(null);
+  const [modalProvider, setModalProvider] = useState<any>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [chainId, setChainId] = useState<number | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -43,7 +54,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
 
     setWeb3Modal(
       new Web3Modal({
-        network: 'mainnet',
+        network: 'binance',
         cacheProvider: true,
         providerOptions,
       })
@@ -53,11 +64,12 @@ export const ConnectionProvider: React.FC = ({ children }) => {
   const connect = useCallback(async () => {
     if (web3Modal) {
       try {
-        const modalProvider = await web3Modal.connect();
-        const ethersProvider = new providers.Web3Provider(modalProvider, 'any');
+        const myModalProvider = await web3Modal.connect();
+        const ethersProvider = new providers.Web3Provider(myModalProvider, 'any');
         const ethersSigner = ethersProvider.getSigner();
         const ethAddress = await ethersSigner.getAddress();
 
+        setModalProvider(myModalProvider);
         setSigner(ethersSigner);
         setAddress(ethAddress);
         setProvider(ethersProvider);
@@ -93,28 +105,46 @@ export const ConnectionProvider: React.FC = ({ children }) => {
 
   // event tracking
   useEffect(() => {
-    if (typeof window.ethereum !== 'undefined') {
-      window.ethereum.on('accountsChanged', accounts => {
-        setAddress(accounts[0]);
-
-        debug('accountsChanged %s', accounts);
-      });
-
-      window.ethereum.on('chainChanged', chainId => {
-        debug('chainChanged %s', chainId);
-      });
-
-      window.ethereum.on('message', message => {
-        debug('providerMessage %s', message);
-      });
+    if (!modalProvider?.on) {
+      return null;
     }
 
+    modalProvider.on('accountsChanged', accounts => {
+      debug('accountsChanged %O', accounts);
+
+      setAddress(accounts[0]);
+    });
+
+    modalProvider.on('chainChanged', updatedChainId => {
+      debug('chainChanged %s', updatedChainId);
+
+      setChainId(chainId);
+    });
+
+    modalProvider.on('networkChanged', async networkId => {
+      debug('networkChanged %s', networkId);
+
+      const network = await provider.getNetwork();
+
+      setChainId(network.chainId);
+    });
+
+    modalProvider.on('disconnect', () => {
+      debug('disconnect');
+    });
+
+    modalProvider.on('close', () => {
+      debug('close');
+    });
+
     return () => {
-      if (window.ethereum) {
-        window.ethereum.removeAllListeners();
+      if (!modalProvider?.removeAllListeners) {
+        return;
       }
+
+      modalProvider.removeAllListeners();
     };
-  }, []);
+  }, [provider, modalProvider]);
 
   return (
     <ConnectContext.Provider
@@ -123,6 +153,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
         disconnect,
         address,
         signer,
+        chainId,
         isConnected,
         isInitialized,
         provider,

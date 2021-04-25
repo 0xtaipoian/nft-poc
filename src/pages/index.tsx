@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { Head } from 'next/document';
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Card, Heading, Image, Text } from 'rebass/styled-components';
 import styled from 'styled-components';
@@ -47,9 +46,6 @@ const IndexPage: NextPage = () => {
 
   return (
     <Page>
-      <Head>
-        <title>NFT PoC</title>
-      </Head>
       <Navigation />
       {error ? (
         <Text color="red" p={3} textAlign="center">

@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-
 import { Provider, TransactionRequest } from '@ethersproject/providers';
 import { Contract, ContractFactory, Overrides, Signer } from 'ethers';
 import type { NftPoc } from '../NftPoc';
